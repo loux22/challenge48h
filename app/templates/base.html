@@ -5,6 +5,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>{% block title %}{% endblock %}</title>
+    <link rel="stylesheet" href="{{ url_for('static',filename='css/style.css') }}">
     {% block link %}{% endblock %}
 </head>
 <body>
@@ -13,7 +14,7 @@
     <div class="wrapper">
         {% block body %}{% endblock %}
     </div>
-
+    <script src="{{ url_for('static',filename='js/displayCopyright.js') }}"></script>
     {% include "layouts/footer.html" %}
     {% block js %}{% endblock %}
 </body>

@@ -1,0 +1,69 @@
+{% extends "base.html" %}
+{% block title %}rechercher une image{% endblock %}
+
+{% block link %}
+{% endblock %}
+
+
+{% block body %}
+
+
+<form action="/import" method="post">
+
+<label class="fontstyle" for="">Nom image</label>
+<input type="text" name="filename">
+
+<label class="fontstyle" for="">Type image</label>
+<select class="select" name="typeImg">
+    <option value="PassionFroid">Photo PassionFroid</option>
+    <option value="fournisseur">Photo fournisseur</option>
+    <option value="logo">Logo</option>
+</select>
+<label class="fontstyle" for="">Photo avec produit</label>
+<select class="select" name="isProduct">
+    <option value="oui">Oui</option>
+    <option value="non">Non</option>
+</select>
+<br>
+<label class="fontstyle" for="">Photo avec humain</label>
+<select class="select" name="isHuman">
+    <option value="oui">Oui</option>
+    <option value="non">Non</option>
+</select>
+<br>
+<label class="fontstyle" for="">Photo institutionnelle</label>
+<select class="select" name="isInstitutional">
+    <option value="oui">Oui</option>
+    <option value="non">Non</option>
+</select>
+<br>
+<label class="fontstyle" for="">Crédit photo</label>
+<input type="text" name="credit">
+
+<label class="fontstyle" for="">Catégorie</label>
+<select name="category">
+    <option value="Produit">Produit</option>
+    <option value="Ambiance">Ambiance</option>
+</select>
+
+<label class="fontstyle" for="">Format d'image</label>
+<select name="category">
+    <option value="Horizontal">Horizontal</option>
+    <option value="Vertical">Vertical</option>
+</select>
+
+{% for tag in tags %}
+    <input type="checkbox" name="tag" value="{{tag.id}}">
+    <label for="">{{tag.name}}</label>
+{% endfor %}
+
+
+<button type="submit">Rechercher une photo</button>
+
+</form>
+
+{% endblock body %}
+
+{% block js %}
+
+{% endblock %}

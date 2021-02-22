@@ -1,0 +1,87 @@
+{% extends "base.html" %}
+{% block title %}importer une image{% endblock %}
+
+{% block link %}
+{% endblock %}
+
+
+{% block body %}
+
+{% if message_error != "" %}
+    <p>{{message_error}}</p>
+{% endif %}
+
+<form action="/import" method="post" enctype="multipart/form-data">
+
+<label class="fontstyle" for="">Nom image</label>
+<input type="file" name="filename" required multiple>
+<br><br>
+<label class="fontstyle" for="">Type image</label>
+<select class="select" name="typeImg">
+    <option value="PassionFroid">Photo PassionFroid</option>
+    <option value="fournisseur">Photo fournisseur</option>
+    <option value="logo">Logo</option>
+</select>
+<br>
+<label class="fontstyle" for="">Photo avec produit</label>
+<select class="select" name="isProduct">
+    <option value="oui">Oui</option>
+    <option value="non">Non</option>
+</select>
+<br>
+<label class="fontstyle" for="">Photo avec humain</label>
+<select class="select" name="isHuman">
+    <option value="oui">Oui</option>
+    <option value="non">Non</option>
+</select>
+<br>
+<label class="fontstyle" for="">Photo institutionnelle</label>
+<select class="select" name="isInstitutional">
+    <option value="oui">Oui</option>
+    <option value="non">Non</option>
+</select>
+<br>
+<label class="fontstyle" for="">Crédit photo</label>
+<input type="text" name="credit" required>
+
+<br><br>
+
+<label class="fontstyle" for="">Droits d'utilisation limités</label>
+<select class="rightOfUse-js select" name="rightOfUse">
+    <option value="oui">Oui</option>
+    <option value="non">Non</option>
+</select>
+
+<div class="isVisible-js">
+    <label class="fontstyle" for="">Copyright</label>
+    <input type="text" name="copyrightImg" required>
+</div>
+
+<br><br>
+
+<label class="fontstyle" for="">Date de fin de droits d’utilisation</label>
+<input type="date" name="endOfUse" required>
+
+<br>
+
+<label class="fontstyle" for="">Catégorie</label>
+<select class="select" name="category">
+    <option value="Produit">Produit</option>
+    <option value="Ambiance">Ambiance</option>
+</select>
+
+{% for tag in tags %}
+    <input type="checkbox" name="tag" value="{{tag.id}}">
+    <label for="">{{tag.name}}</label>
+{% endfor %}
+
+
+<button type="submit">Importer une photo</button>
+
+</form>
+
+{% endblock body %}
+
+{% block js %}
+
+{% endblock %}

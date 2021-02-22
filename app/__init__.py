@@ -11,8 +11,8 @@ app.config.from_object(config.Config)
 db.init_app(app)
 
 # permet de creer la base de données, à mettre en commentaire quand la creation de la bdd est terminer
-with app.app_context():
-    db.drop_all()
-    db.create_all()
+# with app.app_context():
+#     db.drop_all()
+#     db.create_all()
 
 app.register_blueprint(image.image)

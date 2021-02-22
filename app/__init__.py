@@ -1,7 +1,7 @@
 from flask import Flask
 from app import config
 from app.models import db
-from app.controllers import test, a
+from app.controllers import image
 
 
 app = Flask(__name__)
@@ -15,5 +15,4 @@ with app.app_context():
     db.drop_all()
     db.create_all()
 
-app.register_blueprint(test.test)
-app.register_blueprint(a.main)
+app.register_blueprint(image.image)

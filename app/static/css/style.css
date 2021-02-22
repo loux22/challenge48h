@@ -8,7 +8,7 @@ ul {
 }
 
 body {
-  background-color: powderblue;
+  background-color: rgb(226, 226, 226);
 }
 
 li {
@@ -34,7 +34,7 @@ li a {
 
 form {
   /* Uniquement centrer le formulaire sur la page */
-  width: 600px;
+  width: 1000px;
   height: 80vh;
   /* Encadré pour voir les limites du formulaire */
   padding: 1em;
@@ -42,22 +42,22 @@ form {
   border-color: rgb(35, 47, 94);
   display: block;
   position: relative;
-  background-color: #00aecb;
+  background-color: #0c004e;
   overflow: visible;
   line-height: 1.428;
   margin: 0 auto;
 }
 
-form div+div {
+/* form div+div {
   margin-top: 1em;
-}
+} */
 
 label {
   /* Pour être sûrs que toutes les étiquettes ont même taille et sont correctement alignées */
 
   width: 90px;
   text-align: right;
-  background-color: #00aecb;
+  background-color: #0c004e;
 }
 
 input,

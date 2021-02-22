@@ -15,24 +15,28 @@
 
 <label class="fontstyle" for="">Type image</label>
 <select class="select" name="typeImg">
+    <option value=""></option>
     <option value="PassionFroid">Photo PassionFroid</option>
     <option value="fournisseur">Photo fournisseur</option>
     <option value="logo">Logo</option>
 </select>
 <label class="fontstyle" for="">Photo avec produit</label>
 <select class="select" name="isProduct">
+    <option value=""></option>
     <option value="oui">Oui</option>
     <option value="non">Non</option>
 </select>
 <br>
 <label class="fontstyle" for="">Photo avec humain</label>
 <select class="select" name="isHuman">
+    <option value=""></option>
     <option value="oui">Oui</option>
     <option value="non">Non</option>
 </select>
 <br>
 <label class="fontstyle" for="">Photo institutionnelle</label>
 <select class="select" name="isInstitutional">
+    <option value=""></option>
     <option value="oui">Oui</option>
     <option value="non">Non</option>
 </select>
@@ -42,12 +46,14 @@
 
 <label class="fontstyle" for="">Catégorie</label>
 <select name="category">
+    <option value=""></option>
     <option value="Produit">Produit</option>
     <option value="Ambiance">Ambiance</option>
 </select>
 
 <label class="fontstyle" for="">Format d'image</label>
-<select name="category">
+<select name="format">
+    <option value=""></option>
     <option value="Horizontal">Horizontal</option>
     <option value="Vertical">Vertical</option>
 </select>
@@ -61,6 +67,12 @@
 <button type="submit">Rechercher une photo</button>
 
 </form>
+
+{% for image in images %}
+<div>
+    <img src="/static/img/{{image.name}}">
+</div>
+{% endfor %}
 
 {% endblock body %}
 

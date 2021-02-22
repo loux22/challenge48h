@@ -103,7 +103,21 @@ def importImg():
 def findImg():
     tags = Tag.query.all()
 
-    return render_template('pages/find.html', tags=tags)
+    if request.method == 'POST':
+        typeImg = request.form.get('typeImg')
+        isProduct = request.form.get('isProduct')
+        isHuman = request.form.get('isHuman')
+        isInstitutional = request.form.get('isInstitutional')
+        credit = request.form.get('credit')
+        category = request.form.get('category')
+        filenames = request.files.get('filename')
+        formatImg = request.files.get('format')
+        tagsChecked = request.form.getlist('tag')
+    
+    else :
+        images = Image.query.all()
+
+    return render_template('pages/find.html', tags=tags, images=images)
 
 
 

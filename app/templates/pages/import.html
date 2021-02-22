@@ -2,13 +2,22 @@
 {% block title %}importer une image{% endblock %}
 
 {% block link %}
+<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.13.1/css/bootstrap-select.css" />
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.bundle.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.13.1/js/bootstrap-select.min.js"></script>
+<link rel="stylesheet" href="{{ url_for('static',filename='css/style.css') }}">
 {% endblock %}
 
 
 {% block body %}
 
 {% if message_error != "" %}
-    <p>{{message_error}}</p>
+<div class="alert">
+    <span class="closebtn" onclick="this.parentElement.style.display='none';">&times;</span> 
+    <strong>Info </strong> {{message_error}}
+  </div>
 {% endif %}
 
 <form action="/import" method="post" enctype="multipart/form-data">
@@ -62,20 +71,22 @@
 <label class="fontstyle" for="">Date de fin de droits d’utilisation</label>
 <input type="date" name="endOfUse" required>
 
-<br>
+<br><br>
 
 <label class="fontstyle" for="">Catégorie</label>
 <select class="select" name="category">
     <option value="Produit">Produit</option>
     <option value="Ambiance">Ambiance</option>
 </select>
+<br><br>
 
-{% for tag in tags %}
-    <input type="checkbox" name="tag" value="{{tag.id}}">
-    <label for="">{{tag.name}}</label>
-{% endfor %}
+<select name="tag" class="selectpicker" multiple data-live-search="true">
+    {% for tag in tags %}
+        <option value="{{tag.id}}">{{tag.name}}</option>
+    {% endfor %}
+  </select>
 
-
+<br><br>
 <button type="submit">Importer une photo</button>
 
 </form>

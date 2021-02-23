@@ -3,6 +3,7 @@ from app.models import db, Tag, Image, Category
 import os
 from werkzeug.utils import secure_filename
 from PIL import Image as Picture
+import pymysql
 
 
 
@@ -104,6 +105,7 @@ def findImg():
     tags = Tag.query.all()
 
     if request.method == 'POST':
+        filename = request.form.get('filename')
         typeImg = request.form.get('typeImg')
         isProduct = request.form.get('isProduct')
         isHuman = request.form.get('isHuman')
@@ -111,8 +113,15 @@ def findImg():
         credit = request.form.get('credit')
         category = request.form.get('category')
         filenames = request.files.get('filename')
-        formatImg = request.files.get('format')
+        formatImg = request.form.get('format')
         tagsChecked = request.form.getlist('tag')
+
+        result = execute_requete_sql(filename,typeImg,isProduct,isHuman, isInstitutional, credit, formatImg, category, tagsChecked)
+
+        images = []
+        for r in result :
+            images.append({'id': r[0], 'name': r[1]})
+
     
     else :
         images = Image.query.all()
@@ -122,14 +131,95 @@ def findImg():
 
 
 
+def execute_requete_sql(filename, typeImg,isProduct,isHuman, isInstitutional, credit, formatImg, category, tagsChecked) :
+    """ Fonction qui execute la requete sql pour filtrer les images
+
+    Args :
+        all [string] : les differentes colonnes en bdd
+    
+    Return [list]
+    """
+    requetes = get_requete_sql_image(typeImg,isProduct,isHuman, isInstitutional, credit, formatImg, category, tagsChecked)
+    db = pymysql.connect("localhost", "root", "", "pomona")
+    cursor = db.cursor()
+
+    select = "select * from image "
+
+    where = "where image.name LIKE '%{}%' ".format(filename)
+    for requete in requetes :
+        where += requete + " "
+
+    join = ""
+    if category != "" :
+        join += "join category on image.category_id = category.id "
+    
+    if tagsChecked != "" :
+        join += "join image_tag on image.id = image_tag.image_id "
+
+    order = "order by image.name"
+
+    sql = select + join + where + order
+    print("AAAAAAAAAAAAAAAAAAAA")
+    print(sql)
+
+    cursor.execute(sql)
+    result = cursor.fetchall()
+
+    return result
 
 
 
 
+def get_requete_sql_image(typeImg,isProduct,isHuman, isInstitutional, credit, formatImg, category, tagsChecked):
+    """ Fonction qui recupere la requete sql si les inputs sont rempli ou non
 
+    Args :
+        all [string] : les differentes colonnes en bdd
+    
+    Return [list]
+    """
+    # on stocke dans requetes tout les "and name =" si l'input n'est pas vide, si il est vide on ne veut pas filtrer par cet input
+    requetes = []
+    if typeImg != "" :
+        requetes.append("and typeImg = '" + str(typeImg) + "'")
+    
+    if isProduct != "" :
+        if isProduct == "oui" :
+            requetes.append("and isProduct = " + str(True))
+        else : 
+            requetes.append("and isProduct = " + str(False))
 
+    if isHuman != "" :
+        if isHuman == "oui" :
+            requetes.append("and isHuman = " + str(True))
+        else : 
+            requetes.append("and isHuman = " + str(False))
 
+    if isInstitutional != "" :
+        if isInstitutional == "oui" :
+            requetes.append("and isInstitutional = " + str(True))
+        else : 
+            requetes.append("and isInstitutional = " + str(False))
+    
+    if credit != "" :
+        requetes.append("and credit = '" + str(credit) + "'")
 
+    if formatImg != "" :
+        requetes.append("and formatImg = '" + str(formatImg) + "'")
+
+    if category != "" :
+        cat = Category.query.filter_by(name=category).first()
+        requetes.append("and category_id = '" + str(cat.id) + "'")
+
+    if tagsChecked != "" :
+        for tag in tagsChecked :
+            requetes.append("and tag_id = '" + str(tag) + "'")
+
+    return requetes
+
+# select * from image 
+# join category on image.category_id = category.id
+# where category_id = 1 order by image.name
 
 
 

@@ -2,77 +2,89 @@
 {% block title %}rechercher une image{% endblock %}
 
 {% block link %}
+
+<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.13.1/css/bootstrap-select.css" />
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.bundle.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.13.1/js/bootstrap-select.min.js"></script>
 {% endblock %}
 
 
 {% block body %}
 
 
-<form action="/import" method="post">
+<form action="/find" method="post">
 
-<label class="fontstyle" for="">Nom image</label>
-<input type="text" name="filename">
+    <label class="fontstyle" for="">Nom image</label>
+    <input type="text" name="filename">
 
-<label class="fontstyle" for="">Type image</label>
-<select class="select" name="typeImg">
-    <option value=""></option>
-    <option value="PassionFroid">Photo PassionFroid</option>
-    <option value="fournisseur">Photo fournisseur</option>
-    <option value="logo">Logo</option>
-</select>
-<label class="fontstyle" for="">Photo avec produit</label>
-<select class="select" name="isProduct">
-    <option value=""></option>
-    <option value="oui">Oui</option>
-    <option value="non">Non</option>
-</select>
-<br>
-<label class="fontstyle" for="">Photo avec humain</label>
-<select class="select" name="isHuman">
-    <option value=""></option>
-    <option value="oui">Oui</option>
-    <option value="non">Non</option>
-</select>
-<br>
-<label class="fontstyle" for="">Photo institutionnelle</label>
-<select class="select" name="isInstitutional">
-    <option value=""></option>
-    <option value="oui">Oui</option>
-    <option value="non">Non</option>
-</select>
-<br>
-<label class="fontstyle" for="">Crédit photo</label>
-<input type="text" name="credit">
+    <label class="fontstyle" for="">Type image</label>
+    <select class="select" name="typeImg">
+        <option value=""></option>
+        <option value="PassionFroid">Photo PassionFroid</option>
+        <option value="fournisseur">Photo fournisseur</option>
+        <option value="logo">Logo</option>
+    </select>
+    <label class="fontstyle" for="">Photo avec produit</label>
+    <select class="select" name="isProduct">
+        <option value=""></option>
+        <option value="oui">Oui</option>
+        <option value="non">Non</option>
+    </select>
+    <br>
+    <label class="fontstyle" for="">Photo avec humain</label>
+    <select class="select" name="isHuman">
+        <option value=""></option>
+        <option value="oui">Oui</option>
+        <option value="non">Non</option>
+    </select>
+    <br>
+    <label class="fontstyle" for="">Photo institutionnelle</label>
+    <select class="select" name="isInstitutional">
+        <option value=""></option>
+        <option value="oui">Oui</option>
+        <option value="non">Non</option>
+    </select>
+    <br>
+    <label class="fontstyle" for="">Crédit photo</label>
+    <input type="text" name="credit">
 
-<label class="fontstyle" for="">Catégorie</label>
-<select name="category">
-    <option value=""></option>
-    <option value="Produit">Produit</option>
-    <option value="Ambiance">Ambiance</option>
-</select>
+    <label class="fontstyle" for="">Catégorie</label>
+    <select name="category">
+        <option value=""></option>
+        <option value="Produit">Produit</option>
+        <option value="Ambiance">Ambiance</option>
+    </select>
 
-<label class="fontstyle" for="">Format d'image</label>
-<select name="format">
-    <option value=""></option>
-    <option value="Horizontal">Horizontal</option>
-    <option value="Vertical">Vertical</option>
-</select>
+    <label class="fontstyle" for="">Format d'image</label>
+    <select name="format">
+        <option value=""></option>
+        <option value="horizontal">Horizontal</option>
+        <option value="vertical">Vertical</option>
+    </select>
 
-{% for tag in tags %}
-    <input type="checkbox" name="tag" value="{{tag.id}}">
-    <label for="">{{tag.name}}</label>
-{% endfor %}
+    <select name="tag" class="selectpicker" multiple data-live-search="true">
+        {% for tag in tags %}
+        <option value="{{tag.id}}">{{tag.name}}</option>
+        {% endfor %}
+    </select>
 
 
-<button type="submit">Rechercher une photo</button>
+    <button type="submit">Rechercher une photo</button>
 
 </form>
 
 {% for image in images %}
 <div>
-    <img src="/static/img/{{image.name}}">
+    <!-- <img src="/static/img/{{image.name}}"> -->
+    <p>{{image.name}}</p>
 </div>
 {% endfor %}
+
+{% if images|length == 0 %}
+<p>Aucun résultat n'est disponible avec ces critères</p>
+{% endif %}
 
 {% endblock body %}
 

@@ -4,6 +4,7 @@ import os
 from werkzeug.utils import secure_filename
 from PIL import Image as Picture
 import pymysql
+import math
 
 
 
@@ -81,7 +82,7 @@ def importImg():
                         tagImg = Tag.query.filter_by(id=tag).first()
 
                         image.tags.append(tagImg)
-                        db.session.add(image)
+                    db.session.add(image)
                     
                     db.session.commit()
 
@@ -104,6 +105,8 @@ def importImg():
 def findImg():
     tags = Tag.query.all()
 
+    pagination = 1
+
     if request.method == 'POST':
         filename = request.form.get('filename')
         typeImg = request.form.get('typeImg')
@@ -124,9 +127,9 @@ def findImg():
 
     
     else :
-        images = Image.query.all()
+        images = Image.query.limit(28).all()
 
-    return render_template('pages/find.html', tags=tags, images=images)
+    return render_template('pages/find.html', tags=tags, images=images, pagination=pagination, lenImage=int((math.floor(len(images) /4))))
 
 
 
@@ -205,10 +208,24 @@ def delete(id):
     db.session.commit()
     db.session.delete(image)
 
-    # os.remove('app/static/img/' + str(image.name))
+    os.remove('app/static/img/' + str(image.name))
     db.session.commit()
 
     return redirect(url_for('image.findImg'))
+
+
+@image.route('/addtag', methods=['GET', 'POST'])
+def addTag():
+    message = ""
+    if request.method == 'POST':
+        tag = request.form.get('tag')
+        tag = Tag(tag)
+        db.session.add(tag)
+        db.session.commit()
+        message = "vous avez ajouté un tag"
+
+
+    return render_template('pages/addtag.html', message=message)
 
 
 
@@ -237,7 +254,7 @@ def execute_requete_sql(filename, typeImg,isProduct,isHuman, isInstitutional, cr
     if tagsChecked != [] :
         join += "join image_tag on image.id = image_tag.image_id "
 
-    order = "order by image.name"
+    order = "order by image.name limit 28"
 
     sql = select + join + where + order
     print(sql)

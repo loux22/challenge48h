@@ -11,9 +11,9 @@
 <body style="margin: 8px;">
     {% include "layouts/nav.html" %}
 
-    <div class="wrapper">
+    
         {% block body %}{% endblock %}
-    </div>
+    
     <script src="{{ url_for('static',filename='js/displayCopyright.js') }}"></script>
     {% include "layouts/footer.html" %}
     {% block js %}{% endblock %}

@@ -1,5 +1,5 @@
 {% extends "base.html" %}
-{% block title %}importer une image{% endblock %}
+{% block title %}Pomona - PassionFroid | Importation{% endblock %}
 
 {% block link %}
 <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css">
@@ -8,6 +8,7 @@
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.bundle.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.13.1/js/bootstrap-select.min.js"></script>
 <link rel="stylesheet" href="{{ url_for('static',filename='css/style.css') }}">
+<link rel="stylesheet" href="{{ url_for('static',filename='css/alert.css') }}">
 {% endblock %}
 
 
@@ -19,13 +20,13 @@
     <strong>Info </strong> {{message_error}}
 </div>
 {% endif %}
-
+<div class="frame">
 <form action="/import" method="post" enctype="multipart/form-data">
 
     <div class="row">
         <div class="col">
             <label class="fontstyle" for="">Nom image</label>
-            <input class="form-control-file" type="file" name="filename" required multiple>
+            <input style="border-radius: 0;" class="form-control-file" type="file" name="filename" required multiple>
         </div>
         <div class="col">
             <label class="fontstyle" for="">Type image</label>
@@ -118,6 +119,7 @@
     <button type="submit" class="btn btn-primary">Importer une photo</button>
 
 </form>
+</div>
 
 {% endblock body %}
 

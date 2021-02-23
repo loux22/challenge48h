@@ -130,6 +130,87 @@ def findImg():
 
 
 
+@image.route('/update/<int:id>', methods=['GET', 'POST'])
+def updateImg(id):
+    print(id)
+    tags = Tag.query.all()
+    image = Image.query.filter_by(id=id).first()
+
+    tags_image = ""
+    for tag in image.tags :
+        tags_image += str(tag.name) + ","
+
+    if request.method == 'POST':
+        filename = request.form.get('filename')
+        typeImg = request.form.get('typeImg')
+        isProduct = request.form.get('isProduct')
+        isHuman = request.form.get('isHuman')
+        isInstitutional = request.form.get('isInstitutional')
+        credit = request.form.get('credit')
+        category = request.form.get('category')
+        filenames = request.files.get('filename')
+        formatImg = request.form.get('format')
+        tagsChecked = request.form.getlist('tag')
+
+        if isProduct == "oui" :
+            isProduct = True
+        else : 
+            isProduct = False
+
+        if isHuman == "oui" :
+            isHuman = True
+        else : 
+            isHuman = False
+
+        if isInstitutional == "oui" :
+            isInstitutional = True
+        else : 
+            isInstitutional = False
+
+
+        categoryImg = Category.query.filter_by(name=category).first()
+
+        old_name = image.name
+
+        image.name = filename
+        image.typeImg = typeImg
+        image.isProduct = isProduct
+        image.isHuman = isHuman
+        image.isInstitutional = isInstitutional
+        image.credit = credit
+        image.category = categoryImg
+
+        
+        if tagsChecked != [] :
+            for tag in tagsChecked :
+                tagImg = Tag.query.filter_by(id=tag).first()
+                image.tags.append(tagImg)
+
+        db.session.add(image)
+        db.session.commit()
+
+        os.rename('app/static/img/' + str(old_name), 'app/static/img/' + str(filename))
+        return redirect(url_for('image.updateImg',id=id))
+
+
+
+    return render_template('pages/update.html', tags=tags, image=image, tags_image=tags_image)
+
+
+@image.route('/delete/<int:id>', methods=['GET', 'POST'])
+def delete(id):
+    image = Image.query.filter_by(id=id).first()
+    image.tags = []
+    db.session.add(image)
+    db.session.commit()
+    db.session.delete(image)
+
+    # os.remove('app/static/img/' + str(image.name))
+    db.session.commit()
+
+    return redirect(url_for('image.findImg'))
+
+
 
 def execute_requete_sql(filename, typeImg,isProduct,isHuman, isInstitutional, credit, formatImg, category, tagsChecked) :
     """ Fonction qui execute la requete sql pour filtrer les images
@@ -153,13 +234,12 @@ def execute_requete_sql(filename, typeImg,isProduct,isHuman, isInstitutional, cr
     if category != "" :
         join += "join category on image.category_id = category.id "
     
-    if tagsChecked != "" :
+    if tagsChecked != [] :
         join += "join image_tag on image.id = image_tag.image_id "
 
     order = "order by image.name"
 
     sql = select + join + where + order
-    print("AAAAAAAAAAAAAAAAAAAA")
     print(sql)
 
     cursor.execute(sql)
@@ -211,7 +291,7 @@ def get_requete_sql_image(typeImg,isProduct,isHuman, isInstitutional, credit, fo
         cat = Category.query.filter_by(name=category).first()
         requetes.append("and category_id = '" + str(cat.id) + "'")
 
-    if tagsChecked != "" :
+    if tagsChecked != [] :
         for tag in tagsChecked :
             requetes.append("and tag_id = '" + str(tag) + "'")
 

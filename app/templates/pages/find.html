@@ -77,8 +77,10 @@
 
 {% for image in images %}
 <div>
-    <!-- <img src="/static/img/{{image.name}}"> -->
-    <p>{{image.name}}</p>
+    <a href="{{ url_for('image.updateImg', id=image.id ) }}">
+        <img width="50px" height="50px" src="/static/img/{{image.name}}">
+        <p>{{image.name}}</p>
+    </a>
 </div>
 {% endfor %}
 
